@@ -4,8 +4,12 @@ services:
   postgres:
     image: postgres:9.2
     container_name: postgres
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=TCrGaanoC2s7gT
+    volumes:
+      - /var/lib/postgresql/data
 
   zookeeper:
     container_name: zookeeper
@@ -13,9 +17,12 @@ services:
     environment:
       - ZOO_ID=1
       - ZOO_SERVERS=zookeeper
+    ports:
+      - "2181:2181"
 
   overlord:
-    image: znly/druid:0.9.1.1
+#    image: znly/druid:0.9.1.1
+    build: .
     environment:
       - DRUID_XMX=1g 
       - DRUID_XMS=1g 
@@ -25,7 +32,8 @@ services:
       - overlord
 
   coordinator:
-    image: znly/druid:0.9.1.1
+#    image: znly/druid:0.9.1.1
+    build: .
     environment:
       - DRUID_XMX=1g 
       - DRUID_XMS=1g 
@@ -33,10 +41,13 @@ services:
       - DRUID_NEWSIZE=250m
     command:
       - coordinator
+    ports:
+      - "8081:8081"
 
 
   middlemanager:
-    image: znly/druid:0.9.1.1
+#    image: znly/druid:0.9.1.1
+    build: .
     environment:
       - DRUID_XMX=1g 
       - DRUID_XMS=1g 
@@ -46,7 +57,8 @@ services:
       - middleManager
 
   historical:
-    image: znly/druid:0.9.1.1
+#    image: znly/druid:0.9.1.1
+    build: .
     environment:
       - DRUID_XMX=1g 
       - DRUID_XMS=1g 
@@ -56,7 +68,8 @@ services:
       - historical
 
   broker:
-    image: znly/druid:0.9.1.1
+#    image: znly/druid:0.9.1.1
+    build: .
     environment:
       - DRUID_XMX=1g 
       - DRUID_XMS=1g 
@@ -64,3 +77,5 @@ services:
       - DRUID_NEWSIZE=250m
     command:
       - broker
+    ports:
+      - "8082:8082"
